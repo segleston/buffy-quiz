@@ -1,14 +1,14 @@
-let timerEl = document.getElementById('time')
-let startScreen = document.getElementById('start-screen')
-let startBtn = document.getElementById('start')
-let questionsEl = document.getElementById('questions')
-let questionTitle = document.getElementById('question-title')
-let questionchoices = document.getElementById('choices')
-let endScreen = document.getElementById('end-screen')
-let finalScore = document.getElementById('final-score')
-let initials = document.getElementById('initials')
-let submitBtn = document.getElementsByID('submit')
-let feedbackEl = document.getElementsByID('feedback')
+let timerEl = document.getElementById("time");
+let startScreen = document.getElementById("start-screen");
+let startBtn = document.getElementById("start");
+let questionsEl = document.getElementById("questions");
+let questionTitle = document.getElementById("question-title");
+let questionchoices = document.getElementById("choices");
+let endScreen = document.getElementById("end-screen");
+let finalScore = document.getElementById("final-score");
+let initials = document.getElementById("initials");
+let submitBtn = document.getElementsByID("submit");
+let feedbackEl = document.getElementsByID("feedback");
 
 
 // Set of questions: Question text, set of answers, which answer is true (array of objects with boolean)
@@ -32,7 +32,8 @@ let feedbackEl = document.getElementsByID('feedback')
 // option to take quiz again.
 
 let timer = 10
-// let timerInterval 
+let timerInterval = 75
+let questionIndex = 0
 
 
 let questions = [
@@ -63,6 +64,7 @@ let questions = [
   }
 ]
 
+// startBtn.addEventListener('click', startQuiz);
 
 function startQuiz() {
   startScreen.setAttribute("class", "hide")
@@ -70,36 +72,38 @@ function startQuiz() {
   timerInterval = setInterval(function () {
       timer--
       timerEl.textContent = timer
-      if (timer <= 0 {
+      if (timer <= 0) {
         endQuiz()
-      })
+      }
   }, 1000)
 }
 
-startBtn.addEventListener('click', startQuiz)
 
 function selectAnswer(event) {
-  if (event,target.value !== questions
-    [questionIndex].answer) {
-      time -= 15
+  if (event.target.value !== questions[questionIndex].answer) {
+      timer -= 15
 
       if (timer < 0) {
         timer = 0
       }
 
-      timerEl.textContent = timer
-      feedbackEl.textContent = "Wrong!"
+      timerEl.textContent = timer;
+      feedbackEl.textContent = "Wrong!";
 
     } else {
-      feedbackEl.textContent = "Correct!"
+      feedbackEl.textContent = "Correct!";
     }
 
-    feedbackEl.setAttribute("class", "feedback")
+    feedbackEl.setAttribute("class", "feedback");
     setTimeout(function () {
-      feedbackEl.setAttribute("class", "feedback hide")
-    }, 1000)
+      feedbackEl.setAttribute("class", "feedback hide");
+    }, 1000);
 
-    questionIndex++
+    questionIndex++;
+
+    if (questionIndex === questions.length) {
+      endQuiz();
+    }
 }
 
 function endQuiz() {

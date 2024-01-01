@@ -39,24 +39,24 @@ let questions = [
     answer: 'Liam'
   },
   {
-    title: "What was Angel's human name?",
-    choices: ['Liam', 'Mark', 'Angelo', 'Keith'],
-    answer: 'Liam'
+    title: "What was Buffy's Mom called?",
+    choices: ['Sharon', 'Mary', 'Angela', 'Joyce'],
+    answer: 'Joyce'
   },
   {
-    title: "What was Angel's human name?",
-    choices: ['Liam', 'Mark', 'Angelo', 'Keith'],
-    answer: 'Liam'
+    title: "What was the big bad in season 3?",
+    choices: ['Mayor Wilkins', 'Angel', 'Master', 'Riley'],
+    answer: 'Mayor Wilkins'
   },
   {
-    title: "What was Angel's human name?",
-    choices: ['Liam', 'Mark', 'Angelo', 'Keith'],
-    answer: 'Liam'
+    title: "What was Anya most afraid of?",
+    choices: ['Cats', 'Mutants', 'Bunnies', 'Commitment'],
+    answer: 'Bunnies'
   },
   {
-    title: "What was Angel's human name?",
-    choices: ['Liam', 'Mark', 'Angelo', 'Keith'],
-    answer: 'Liam'
+    title: "Who sired Spike?",
+    choices: ['Angel', 'Darla', 'Drusilla'],
+    answer: 'Drusilla'
   }
 ]
 
@@ -96,19 +96,21 @@ function showQuestion() {
 
 
 function selectAnswer(event) {
-  if (event.target.textContent !== questions[questionIndex].answer) {
-      timer -= 15;
+  const selectedAnswer = event.target.textContent;
+  const correctAnswer = questions[questionIndex].answer;
 
-      if (timer < 0) {
-        timer = 0;
-      }
+  if (selectedAnswer !== correctAnswer) {
+    timer -= 15;
 
-      timerEl.textContent = timer;
-      feedbackEl.textContent = "Wrong!";
-
-    } else {
-      feedbackEl.textContent = "Correct!";
+    if (timer < 0) {
+      timer = 0;
     }
+
+    timerEl.textContent = timer;
+    feedbackEl.textContent = "Wrong!";
+  } else {
+    feedbackEl.textContent = "Correct!";
+  }
 
     feedbackEl.classList.add("feedback");
     setTimeout(function () {
@@ -128,17 +130,19 @@ function endQuiz() {
   clearInterval(timerInterval)
   questionsEl.setAttribute('class', 'hide')
   endScreen.removeAttribute('class')
+  finalScore.textContent = timer;
 }
 
-submitBtn.addEventListener('click', () => {
+submitBtn.addEventListener("click", () => {
   const initialsValue = initials.value.trim();
   if (initialsValue !== '') {
     const highscores = JSON.parse(localStorage.getItem('highscores')) || [];
     highscores.push({ initials: initialsValue, score: timer});
+    highscores.sort((a, b) => b.score - a.score);
     localStorage.setItem('highscores', JSON.stringify(highscores));
 
     // Redirect to highscores page
-    window.location.href = 'highscores.html';
+    window.location.href = "highscores.html";
   } else {
     alert('Please enter your initials!');
   }

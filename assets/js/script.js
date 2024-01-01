@@ -3,15 +3,15 @@ let startScreen = document.getElementById("start-screen");
 let startBtn = document.getElementById("start");
 let questionsEl = document.getElementById("questions");
 let questionTitle = document.getElementById("question-title");
-let questionchoices = document.getElementById("choices");
+let choicesEl = document.getElementById("choices");
 let endScreen = document.getElementById("end-screen");
 let finalScore = document.getElementById("final-score");
 let initials = document.getElementById("initials");
-let submitBtn = document.getElementsByID("submit");
-let feedbackEl = document.getElementsByID("feedback");
+let submitBtn = document.getElementById("submit");
+let feedbackEl = document.getElementById("feedback");
 
 
-// Set of questions: Question text, set of answers, which answer is true (array of objects with boolean)
+// Set of questions: Question text, set of answers, which answer is true 
 // Landing page: explanation of quiz & start button. 
 // Start button - when clicked, landing page goes away and a timer starts counting down (75 seconds) (event listener)
 // and first question appears. 
@@ -31,11 +31,7 @@ let feedbackEl = document.getElementsByID("feedback");
 //  initials and score get scored in local storage, user taken to high scores page, high scores are listed higher to lower.
 // option to take quiz again.
 
-let timer = 10
-let timerInterval = 75
-let questionIndex = 0
-
-
+// Five quiz questions, potential answers and the correct answer
 let questions = [
   {
     title: "What was Angel's human name?",
@@ -64,11 +60,16 @@ let questions = [
   }
 ]
 
-// startBtn.addEventListener('click', startQuiz);
+let timer = questions.length * 10
+let timerInterval;
+let questionIndex = 0
+let score = 0
+
 
 function startQuiz() {
   startScreen.setAttribute("class", "hide")
   questionsEl.removeAttribute('class')
+  showQuestion()
   timerInterval = setInterval(function () {
       timer--
       timerEl.textContent = timer
@@ -79,12 +80,27 @@ function startQuiz() {
 }
 
 
+startBtn.addEventListener("click", startQuiz);
+
+function showQuestion() {
+  const currentQuestion = questions[questionIndex];
+  questionTitle.textContent = currentQuestion.title;
+  choicesEl.innerHTML = "";
+  currentQuestion.choices.forEach(choice => {
+    const button = document.createElement('button');
+    button.textContent = choice;
+    button.addEventListener('click', selectAnswer);
+    choicesEl.appendChild(button);
+  });
+}
+
+
 function selectAnswer(event) {
-  if (event.target.value !== questions[questionIndex].answer) {
-      timer -= 15
+  if (event.target.textContent !== questions[questionIndex].answer) {
+      timer -= 15;
 
       if (timer < 0) {
-        timer = 0
+        timer = 0;
       }
 
       timerEl.textContent = timer;
@@ -94,15 +110,17 @@ function selectAnswer(event) {
       feedbackEl.textContent = "Correct!";
     }
 
-    feedbackEl.setAttribute("class", "feedback");
+    feedbackEl.classList.add("feedback");
     setTimeout(function () {
-      feedbackEl.setAttribute("class", "feedback hide");
+      feedbackEl.classList.remove("feedback");
     }, 1000);
 
     questionIndex++;
 
-    if (questionIndex === questions.length) {
+    if (questionIndex >= questions.length) {
       endQuiz();
+    } else {
+      showQuestion()
     }
 }
 
@@ -112,4 +130,18 @@ function endQuiz() {
   endScreen.removeAttribute('class')
 }
 
-startBtn.addEventListener('click', startQuiz)
+submitBtn.addEventListener('click', () => {
+  const initialsValue = initials.value.trim();
+  if (initialsValue !== '') {
+    const highscores = JSON.parse(localStorage.getItem('highscores')) || [];
+    highscores.push({ initials: initialsValue, score: timer});
+    localStorage.setItem('highscores', JSON.stringify(highscores));
+
+    // Redirect to highscores page
+    window.location.href = 'highscores.html';
+  } else {
+    alert('Please enter your initials!');
+  }
+});
+
+// startBtn.addEventListener('click', startQuiz)

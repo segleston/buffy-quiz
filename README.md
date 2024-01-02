@@ -6,7 +6,7 @@ A timed Buffy the Vampire Slayer quiz, to showcase my javascript skills which I 
 
 
 ## Usage
-The quiz can be accessed via github pages: https://segleston.github.io/code-quiz/ 
+The quiz can be accessed via github pages: https://segleston.github.io/buffy-quiz/ 
 
 1. Click on the start quiz button:
 

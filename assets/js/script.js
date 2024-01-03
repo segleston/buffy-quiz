@@ -26,7 +26,7 @@ let questions = [
     answer: 'Joyce'
   },
   {
-    title: "What was the big bad in season 3?",
+    title: "Wh0 was the big bad in season 3?",
     choices: ['Mayor Wilkins', 'Angel', 'Master', 'Riley'],
     answer: 'Mayor Wilkins'
   },

@@ -1,4 +1,4 @@
-# code-quiz
+# buffy quiz
 
 ## Description
 
